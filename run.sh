@@ -201,7 +201,7 @@ setup_environment_variables() {
     echo ""
 }
 
-# Setup environment variables before showing menu
+# Setup environment variables before installation
 setup_environment_variables
 
 # ────────────────────────────────
@@ -234,108 +234,26 @@ echo "Platform: $PLATFORM_NAME"
 echo ""
 
 # ────────────────────────────────
-# List Available Scripts
+# Run Installation Script
 # ────────────────────────────────
 
-BASE_PATH="$SCRIPT_DIR/$PLATFORM/scripts"
+INSTALL_SCRIPT="$SCRIPT_DIR/$PLATFORM/scripts/enviroment/00-install-all.sh"
 
-if [ ! -d "$BASE_PATH" ]; then
-    echo "❌ Error: $BASE_PATH not found"
+if [ ! -f "$INSTALL_SCRIPT" ]; then
+    echo "❌ Error: Installation script not found at $INSTALL_SCRIPT"
     exit 1
 fi
 
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-echo "Available Scripts"
+echo "🚀 Starting Installation for $PLATFORM_NAME"
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 echo ""
 
-# Find all .sh files and create menu
-declare -a SCRIPTS
-declare -a SCRIPT_PATHS
-INDEX=1
-
-# Environment setup scripts
-if [ -d "$BASE_PATH/enviroment" ]; then
-    echo "📦 Environment Setup:"
-    for script in "$BASE_PATH/enviroment"/*.sh; do
-        if [ -f "$script" ]; then
-            SCRIPT_NAME=$(basename "$script")
-            SCRIPTS[$INDEX]="$SCRIPT_NAME"
-            SCRIPT_PATHS[$INDEX]="$script"
-            echo "  $INDEX) $SCRIPT_NAME"
-            INDEX=$((INDEX + 1))
-        fi
-    done
-    echo ""
-fi
-
-# Utility scripts
-if [ -d "$BASE_PATH/utils" ]; then
-    echo "🛠️  Utilities:"
-    for script in "$BASE_PATH/utils"/*.sh; do
-        if [ -f "$script" ]; then
-            SCRIPT_NAME=$(basename "$script")
-            SCRIPTS[$INDEX]="$SCRIPT_NAME"
-            SCRIPT_PATHS[$INDEX]="$script"
-            echo "  $INDEX) $SCRIPT_NAME"
-            INDEX=$((INDEX + 1))
-        fi
-    done
-    echo ""
-fi
-
-# Other scripts in root
-echo "📄 Other Scripts:"
-for script in "$BASE_PATH"/*.sh; do
-    if [ -f "$script" ]; then
-        SCRIPT_NAME=$(basename "$script")
-        # Skip if already listed
-        if [[ ! " ${SCRIPTS[@]} " =~ " ${SCRIPT_NAME} " ]]; then
-            SCRIPTS[$INDEX]="$SCRIPT_NAME"
-            SCRIPT_PATHS[$INDEX]="$script"
-            echo "  $INDEX) $SCRIPT_NAME"
-            INDEX=$((INDEX + 1))
-        fi
-    fi
-done
-
-if [ ${#SCRIPTS[@]} -eq 0 ]; then
-    echo "❌ No scripts found in $BASE_PATH"
-    exit 1
-fi
-
-echo ""
-echo "  0) ❌ Cancel"
-echo ""
-read -p "Select script to run [0-$((INDEX-1))]: " SCRIPT_CHOICE
-
-if [ "$SCRIPT_CHOICE" = "0" ]; then
-    echo "Cancelled."
-    exit 0
-fi
-
-if [ -z "${SCRIPT_PATHS[$SCRIPT_CHOICE]}" ]; then
-    echo "❌ Invalid choice"
-    exit 1
-fi
-
-SELECTED_SCRIPT="${SCRIPT_PATHS[$SCRIPT_CHOICE]}"
-SELECTED_NAME="${SCRIPTS[$SCRIPT_CHOICE]}"
+# Run the installation script
+cd "$(dirname "$INSTALL_SCRIPT")"
+bash "$INSTALL_SCRIPT"
 
 echo ""
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-echo "Running: $SELECTED_NAME"
-echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-echo ""
-
-# ────────────────────────────────
-# Run Selected Script
-# ────────────────────────────────
-
-cd "$(dirname "$SELECTED_SCRIPT")"
-bash "$SELECTED_SCRIPT"
-
-echo ""
-echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-echo "✅ Script completed!"
+echo "✅ Installation completed!"
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
