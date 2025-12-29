@@ -1,4 +1,4 @@
-# 🌐 Rubinho Install Work
+# 🌐 Rbin Install Work
 
 <div align="center">
 
@@ -260,7 +260,7 @@ enterprise-scripts/
 
 #### Configuration Files
 - Configuration files (starship.toml, user-settings.json, cursor-keyboard.json, zsh-config) are automatically downloaded from the remote repository during installation
-- The scripts fetch configurations from: `https://github.com/devrubinho/rubinho-install-dev`
+- The scripts fetch configurations from: `https://github.com/rbinoliveira/rbin-install-dev`
 
 ---
 
@@ -521,7 +521,7 @@ enterprise-scripts/
 
 #### Arquivos de Configuração
 - Arquivos de configuração (starship.toml, user-settings.json, cursor-keyboard.json, zsh-config) são baixados automaticamente do repositório remoto durante a instalação
-- Os scripts buscam configurações de: `https://github.com/devrubinho/rubinho-install-dev`
+- Os scripts buscam configurações de: `https://github.com/rbinoliveira/rbin-install-dev`
 
 ---
 
